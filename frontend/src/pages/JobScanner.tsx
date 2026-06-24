@@ -1,92 +1,84 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { checkJob } from "../services/api";
 
-function JobScanner() {
-  const [text, setText] = useState("");
-  const [result, setResult] = useState("");
+export default function JobScanner() {
+  const [job, setJob] = useState({
+    title: "",
+    company: "",
+    salary: "",
+    description: ""
+  });
 
-  const scanJob = () => {
-    if (!text.trim()) return;
+  const [result, setResult] = useState<any>(null);
 
-    const scamKeywords = [
-      "no experience",
-      "pay upfront",
-      "earn 10000 per day",
-      "work from home unlimited income",
-      "registration fee",
-    ];
-
-    const isScam = scamKeywords.some((word) =>
-      text.toLowerCase().includes(word)
-    );
-
-    setResult(
-      isScam
-        ? "⚠️ Fake Job Alert: This looks like a SCAM"
-        : "✅ Job looks LEGIT (No strong scam signals found)"
-    );
+  const handleCheck = async () => {
+    const data = await checkJob(job);
+    setResult(data);
   };
 
   return (
-    <div style={styles.container}>
-      <h1>💼 Job Scanner</h1>
+    <div className="space-y-6">
 
-      <textarea
-        style={styles.textarea}
-        placeholder="Paste job description here..."
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-      />
+      <h1 className="text-2xl font-bold">💼 Job Scam Detector</h1>
 
-      <button style={styles.button} onClick={scanJob}>
-        Check Job
-      </button>
+      <div className="bg-white p-6 rounded-xl shadow space-y-3">
+
+        <input
+          className="w-full p-2 border"
+          placeholder="Job Title"
+          onChange={(e) => setJob({ ...job, title: e.target.value })}
+        />
+
+        <input
+          className="w-full p-2 border"
+          placeholder="Company"
+          onChange={(e) => setJob({ ...job, company: e.target.value })}
+        />
+
+        <input
+          className="w-full p-2 border"
+          placeholder="Salary"
+          onChange={(e) => setJob({ ...job, salary: e.target.value })}
+        />
+
+        <textarea
+          className="w-full p-2 border h-32"
+          placeholder="Job Description"
+          onChange={(e) => setJob({ ...job, description: e.target.value })}
+        />
+
+        <button
+          onClick={handleCheck}
+          className="bg-blue-600 text-white px-5 py-2 rounded"
+        >
+          Analyze Job
+        </button>
+
+      </div>
 
       {result && (
-        <div
-          style={{
-            ...styles.result,
-            background: result.includes("SCAM") ? "#7f1d1d" : "#14532d",
-          }}
-        >
-          {result}
+        <div className="bg-white p-6 rounded-xl shadow">
+
+          <h2 className="font-semibold">🧠 Risk Score</h2>
+
+          <p className="text-3xl font-bold text-red-500">
+            {result.risk_score || 0}%
+          </p>
+
+          {/* AI REASONS */}
+          <div className="mt-4">
+            <h3 className="font-semibold">Reasons:</h3>
+
+            <ul className="list-disc ml-5 text-sm text-gray-700">
+              {(result.reasons || []).map((r: string, i: number) => (
+                <li key={i}>{r}</li>
+              ))}
+            </ul>
+          </div>
+
         </div>
       )}
+
     </div>
   );
 }
-
-const styles: any = {
-  container: {
-    padding: "30px",
-    background: "#0f172a",
-    minHeight: "100vh",
-    color: "white",
-  },
-  textarea: {
-    width: "100%",
-    height: "150px",
-    padding: "12px",
-    borderRadius: "8px",
-    border: "1px solid #334155",
-    background: "#1e293b",
-    color: "white",
-    marginTop: "10px",
-  },
-  button: {
-    marginTop: "10px",
-    padding: "10px 16px",
-    background: "#f59e0b",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer",
-    color: "black",
-    fontWeight: "bold",
-  },
-  result: {
-    marginTop: "20px",
-    padding: "15px",
-    borderRadius: "8px",
-  },
-};
-
-export default JobScanner;

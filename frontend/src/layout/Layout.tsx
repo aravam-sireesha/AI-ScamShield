@@ -1,33 +1,20 @@
-import Sidebar from "./Sidebar";
-
-function Layout({ children }: any) {
+export default function Layout({ children, dark, setDark }: any) {
   return (
-    <div style={{ display: "flex" }}>
-      <Sidebar />
-      <div
-        style={{
-          marginLeft: "220px",
-          padding: "20px",
-          width: "100%",
-          minHeight: "100vh",
-          background: "#0f172a",
-          color: "white",
-        }}
-      >
-        {children}
+    <div className="flex h-screen bg-gray-100 overflow-hidden">
+
+      {/* SIDEBAR */}
+      <div className="flex-shrink-0">
+        {children && null}
       </div>
+
+      {/* REAL SIDEBAR + CONTENT */}
+      <div className="flex w-full">
+
+        {/* Sidebar will come from App wrapper */}
+        {children}
+
+      </div>
+
     </div>
   );
 }
-
-export default Layout;
-<div
-  style={{
-    marginLeft: "240px",
-    padding: "30px",
-    width: "100%",
-    minHeight: "100vh",
-    background: "#0f172a",
-    color: "white",
-  }}
-></div>

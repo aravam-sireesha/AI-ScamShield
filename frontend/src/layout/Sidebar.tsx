@@ -1,38 +1,42 @@
 import { NavLink } from "react-router-dom";
 
-function Sidebar() {
+export default function Sidebar() {
   return (
-    <div style={{
-      width: "220px",
-      height: "100vh",
-      background: "#0f172a",
-      color: "white",
-      padding: "20px",
-      position: "fixed"
-    }}>
-      <h2>🛡️ ScamShield</h2>
+    <div className="w-64 bg-white dark:bg-gray-900 h-screen p-5 shadow">
 
-      <NavLink to="/" style={{ display: "block", margin: "10px 0", color: "white" }}>
-        Dashboard
-      </NavLink>
+      <h2 className="text-xl font-bold mb-6">🛡️ ScamShield</h2>
 
-      <NavLink to="/url" style={{ display: "block", margin: "10px 0", color: "white" }}>
-        URL Scanner
-      </NavLink>
+      <nav className="space-y-3">
 
-      <NavLink to="/email" style={{ display: "block", margin: "10px 0", color: "white" }}>
-        Email Scanner
-      </NavLink>
+        <NavLink
+          to="/"
+          className="block p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+        >
+          📊 Dashboard
+        </NavLink>
 
-      <NavLink to="/job" style={{ display: "block", margin: "10px 0", color: "white" }}>
-        Job Scanner
-      </NavLink>
+        <NavLink
+          to="/email"
+          className="block p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+        >
+          📧 Email Scanner
+        </NavLink>
 
-      <NavLink to="/reports" style={{ display: "block", margin: "10px 0", color: "white" }}>
-        Reports
-      </NavLink>
+        <NavLink
+          to="/url"
+          className="block p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+        >
+          🌐 URL Scanner
+        </NavLink>
+
+        <NavLink
+          to="/job"
+          className="block p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+        >
+          💼 Job Scanner
+        </NavLink>
+
+      </nav>
     </div>
   );
 }
-
-export default Sidebar;
